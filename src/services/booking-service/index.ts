@@ -50,8 +50,9 @@ async function updateBooking(userId: number, roomId: number, bookingId: number) 
   const roomIsNotFree = await bookingRepository.findBookingById(roomId);
   if (roomIsNotFree) throw forbiddenBookingError();
 
-  const brandNewBooking = await bookingRepository.updateBooking(roomId, bookingId);
+  await bookingRepository.updateBooking(roomId, bookingId);
 
+  const brandNewBooking = await bookingRepository.findBookingById(roomId);
   return brandNewBooking;
 }
 
