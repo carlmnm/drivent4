@@ -28,3 +28,19 @@ export async function postBooking(req: AuthenticatedRequest, res: Response, next
     next(error);
   }
 }
+
+export async function updateBooking(req: AuthenticatedRequest, res: Response, next: NextFunction) {
+  const { userId } = req;
+  const { roomId } = req.body;
+  const { bookingId } = req.params;
+
+  try {
+    const newBooking = await bookingService.updateBooking(userId, roomId, +bookingId);
+    return res.status(httpStatus.OK).send({ bookingId: newBooking.id });
+  } catch (error) {
+    if (error.name === 'forbiddenBookingError') {
+      return res.status(httpStatus.FORBIDDEN).send(error.message);
+    }
+    next(error);
+  }
+}
