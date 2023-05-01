@@ -13,7 +13,26 @@ async function findBooking(userId: number): Promise<{ Room: Room; id: number }> 
   });
 }
 
+async function createBooking(roomId: number, userId: number) {
+  return await prisma.booking.create({
+    data: {
+      roomId: roomId,
+      userId: userId,
+    },
+  });
+}
+
+async function findBookingById(roomId: number) {
+  return await prisma.booking.findFirst({
+    where: {
+      roomId: roomId,
+    },
+  });
+}
+
 const bookingRepository = {
   findBooking,
+  findBookingById,
+  createBooking,
 };
 export default bookingRepository;
